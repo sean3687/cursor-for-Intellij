@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idea-plugin>
+    <id>org.jetbrains.plugins.template</id>
+    <name>SweepAI</name>
+    <vendor>JetBrains</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <resource-bundle>messages.MyBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow factoryClass="org.jetbrains.plugins.template.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <postStartupActivity implementation="org.jetbrains.plugins.template.startup.MyProjectActivity4"/>
+        <notificationGroup id="Template Plugin Notifications" displayType="BALLOON"/>
+        <applicationService serviceImplementation="org.jetbrains.plugins.template.startup.SuggestionService"/>
+    </extensions>
+
+    <actions>
+        <action id="AcceptSuggestion" 
+                class="org.jetbrains.plugins.template.startup.SuggestionService$acceptAction"
+                text="Accept Suggestion" 
+                description="Accept the current code suggestion">
+            <keyboard-shortcut first-keystroke="TAB" keymap="$default"/>
+        </action>
+        <action id="RejectSuggestion" 
+                class="org.jetbrains.plugins.template.startup.SuggestionService$rejectAction"
+                text="Reject Suggestion" 
+                description="Reject the current code suggestion">
+            <keyboard-shortcut first-keystroke="ESCAPE" keymap="$default"/>
+        </action>
+    </actions>
+</idea-plugin>
