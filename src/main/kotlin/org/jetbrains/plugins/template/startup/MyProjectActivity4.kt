@@ -221,8 +221,10 @@ class MyProjectActivity4 : ProjectActivity {
 
             // Detect current line's indentation
             val document = editor.document
+            //For example, if you're on line 8, this gives you the offset where that line starts (e.g., offset 214).
             val lineStartOffset = document.getLineStartOffset(lineNumber)
             val lineText = document.getText(TextRange(lineStartOffset, caretOffset))
+            // You need the actual indentation string for rendering and inserting:
             val currentLineIndentation = lineText.takeWhile { it.isWhitespace() }
 
             // Calculate indentation based on context

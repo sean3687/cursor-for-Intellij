@@ -8,7 +8,7 @@ import java.net.URL
 import java.nio.charset.StandardCharsets
 
 object OpenAIClient {
-    private const val API_KEY = "YOUR_OPENAI_API_KEY"
+    private const val API_KEY = System.getenv("OPENAI_API_KEY") ?: "YOUR_API_KEY_HERE"
 
     fun getSuggestions(context: String): String {
         NotificationUtil.debug(null, "Starting OpenAI API call...")
@@ -24,7 +24,11 @@ object OpenAIClient {
         val messages = listOf(
             mapOf(
                 "role" to "system",
-                "content" to "You are a code autocomplete assistant. Provide only the code completion without any explanations. Always maintain proper indentation in your response. Each line after a control flow statement (if, while, for, etc.) should start on a new line with proper indentation. Never put code on the same line as a control flow statement."
+                "content" to "You are a code autocomplete assistant. \n" +
+                        "Provide only the code completion, with no explanations, no formatting, and no code block markers (such as triple backticks or LaTeX verbatim environments). \n" +
+                        "Always maintain proper indentation in your response. \n" +
+                        "Each line after a control flow statement (if, while, for, etc.) should start on a new line with proper indentation. \n" +
+                        "Never put code on the same line as a control flow statement."
             ),
             mapOf(
                 "role" to "user",
@@ -36,7 +40,7 @@ object OpenAIClient {
             "model" to "gpt-3.5-turbo",
             "messages" to messages,
             "max_tokens" to 150,
-            "temperature" to 0.7,
+            "temperature" to 0,
             "stream" to false
         )
 
@@ -77,8 +81,8 @@ object OpenAIClient {
 
                         // Process the content - remove code block markers if present
                         val processedContent = content
-                            .replace(Regex("^```[a-zA-Z]*\\n"), "")  // Remove opening marker at start
-                            .replace(Regex("\\n```$"), "")           // Remove closing marker at end
+                            .replace(Regex("^```[a-zA-Z]*\\s*"), "")  // Remove opening marker at start (with optional whitespace)
+                            .replace(Regex("\\s*```\\s*$"), "")       // Remove closing marker at end (with optional whitespace)
                             .trim()                                  // Remove any leading/trailing whitespace
 
 

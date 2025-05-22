@@ -14,10 +14,13 @@ class InlineSuggestionRenderer(
     private val indent: String = ""
 ) : EditorCustomElementRenderer {
 
-    private val lines: List<String> = suggestion.lines().map { line ->
-        if (line.isBlank()) line else "$indent$line"
-    }
+//   Before
+//   private val lines: List<String> = suggestion.lines().map { line ->
+//        if (line.isBlank()) line else "$indent$line"
 
+//   }
+    //Fix
+    private val lines: List<String> = suggestion.lines()
     override fun calcWidthInPixels(inlay: Inlay<*>): Int {
         val editor = inlay.editor
         val fontMetrics = editor.contentComponent.getFontMetrics(editor.colorsScheme.getFont(EditorFontType.PLAIN))
